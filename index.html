@@ -16,7 +16,7 @@
             --text-muted: #64748b;
             --border-color: #e2e8f0;
             --danger: #ef4444;
-            --dropdown-hover: #f1f5f9;
+            --success: #10b981;
         }
 
         * {
@@ -79,36 +79,9 @@
             border: 1px solid var(--border-color);
         }
 
-        .browser-recommendation {
-            background-color: #e0e7ff;
-            color: #3730a3;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border: 1px solid #c7d2fe;
-            line-height: 1.5;
-        }
-
-        .browser-recommendation i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .input-section {
-            margin-bottom: 20px;
-        }
-
-        .input-section label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
+        .input-section { margin-bottom: 20px; }
+        .input-section label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        
         textarea {
             width: 100%;
             height: 200px;
@@ -120,26 +93,14 @@
             transition: all 0.3s ease;
             line-height: 1.5;
         }
+        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
 
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        .word-counter {
-            text-align: right;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 8px;
-            font-weight: 600;
-        }
-
+        .word-counter { text-align: right; font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; font-weight: 600; }
         .word-counter.limit-reached { color: var(--danger); }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr;
             gap: 20px;
             margin-bottom: 25px;
             background: #f1f5f9;
@@ -147,25 +108,10 @@
             border-radius: 12px;
         }
 
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            position: relative;
-        }
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+        .control-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
 
-        .control-group label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .custom-select-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .select-header {
+        select {
             width: 100%;
             padding: 12px 15px;
             border-radius: 8px;
@@ -173,84 +119,11 @@
             background: white;
             cursor: pointer;
             font-size: 0.95rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
+        select:focus { outline: none; border-color: var(--primary); }
 
-        .select-header:hover { border-color: var(--primary); }
-
-        .select-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-top: 5px;
-            max-height: 250px;
-            overflow-y: auto;
-            z-index: 100;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            display: none;
-        }
-
-        .select-list.show { display: block; }
-
-        .select-item {
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .select-item:hover { background: var(--dropdown-hover); }
-        .select-item:last-child { border-bottom: none; }
-
-        .voice-info {
-            display: flex;
-            flex-direction: column;
-            pointer-events: none;
-        }
-
-        .voice-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
-        .voice-lang { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
-
-        .inline-play-btn {
-            background: #e2e8f0;
-            color: var(--primary);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .inline-play-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            padding: 10px 0;
-            cursor: pointer;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
+        .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+        
         button.action-btn {
             flex: 1;
             padding: 14px 20px;
@@ -266,24 +139,32 @@
             transition: all 0.2s ease;
         }
 
-        .btn-play { background: var(--primary); color: white; }
-        .btn-play:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-generate { background: var(--primary); color: white; }
+        .btn-generate:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-generate:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
         
-        .btn-play.speaking {
-            background: #4338ca;
-            opacity: 0.8;
-            box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
-            cursor: not-allowed;
-        }
+        .btn-play { background: var(--success); color: white; display: none; }
+        .btn-play:hover { background: #059669; }
+        
+        .btn-download { background: #0f172a; color: white; display: none; }
+        .btn-download:hover { background: #334155; transform: translateY(-2px); }
 
-        .btn-pause { background: #e2e8f0; color: var(--text-main); }
-        .btn-pause:hover { background: #cbd5e1; }
-        .btn-download { background: #10b981; color: white; }
-        .btn-download:hover { background: #059669; }
+        /* Loader Animation */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        audio { display: none; } /* Hidden Audio Player */
 
         @media (max-width: 600px) {
             .action-buttons { flex-direction: column; }
-            .browser-recommendation { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -294,217 +175,173 @@
             <img src="logo.jpg" alt="LoonaLabs Logo" class="logo-img" onerror="this.style.display='none'">
             <h1>LoonaLabs</h1>
         </div>
-        <p>Professional Unlimited Text-to-Speech Studio</p>
+        <p>Professional Text-to-Speech Studio</p>
     </div>
 
     <div class="main-container">
         
-        <div class="browser-recommendation">
-            <i class="fas fa-lightbulb"></i>
-            <div>
-                <strong>Pro Tip:</strong> For the most natural, human-like, and emotional voices, we highly recommend using this tool in <b>Microsoft Edge</b> or <b>Google Chrome</b> browser.
-            </div>
-        </div>
-        
         <div class="input-section">
             <label for="text-input">Enter your text here:</label>
-            <textarea id="text-input" placeholder="Type or paste your text here to generate professional voiceover..."></textarea>
-            <div class="word-counter" id="word-count">0 / 5000 Words</div>
+            <textarea id="text-input" placeholder="Type or paste your text here (up to 4000 words)..."></textarea>
+            <div class="word-counter" id="word-count">0 / 4000 Words</div>
         </div>
 
         <div class="controls-grid">
-            <div class="control-group" style="grid-column: 1 / -1;">
-                <label><i class="fas fa-globe"></i> Select Voice</label>
-                
-                <div class="custom-select-container">
-                    <div class="select-header" id="select-header">
-                        <span id="selected-voice-text">Loading voices...</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="select-list" id="select-list">
-                    </div>
-                </div>
-            </div>
-            
             <div class="control-group">
-                <label for="speed-slider"><i class="fas fa-tachometer-alt"></i> Speed (<span id="speed-value">1.0</span>x)</label>
-                <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
-            </div>
-
-            <div class="control-group">
-                <label for="pitch-slider"><i class="fas fa-music"></i> Pitch (<span id="pitch-value">1.0</span>)</label>
-                <input type="range" id="pitch-slider" min="0" max="2" value="1" step="0.1">
+                <label><i class="fas fa-user-circle"></i> Select Professional Voice</label>
+                <select id="voice-select">
+                    <option value="en-us|John">John — English (USA) — Male</option>
+                    <option value="en-us|Linda">Linda — English (USA) — Female</option>
+                    <option value="en-us|Mike">Mike — English (USA) — Male</option>
+                    <option value="en-us|Amy">Amy — English (USA) — Female</option>
+                    <option value="en-in|Harry">Harry — English (India) — Male</option>
+                    <option value="en-in|Raveena">Raveena — English (India) — Female</option>
+                    <option value="ur-pk|Asad">Asad — Urdu (Pakistan) — Male</option>
+                    <option value="ur-pk|Uzma">Uzma — Urdu (Pakistan) — Female</option>
+                    <option value="hi-in|Kabir">Kabir — Hindi (India) — Male</option>
+                    <option value="hi-in|Puja">Puja — Hindi (India) — Female</option>
+                    <option value="ar-sa|Salim">Salim — Arabic (Saudi Arabia) — Male</option>
+                    <option value="ar-sa|Oda">Oda — Arabic (Saudi Arabia) — Female</option>
+                </select>
             </div>
         </div>
 
         <div class="action-buttons">
-            <button class="action-btn btn-play" id="play-btn"><i class="fas fa-play"></i> Play Voiceover</button>
-            <button class="action-btn btn-pause" id="pause-btn"><i class="fas fa-pause"></i> Pause</button>
-            <button class="action-btn btn-pause" id="resume-btn"><i class="fas fa-play-circle"></i> Resume</button>
-            <button class="action-btn btn-pause" id="stop-btn"><i class="fas fa-stop"></i> Stop</button>
-            <button class="action-btn btn-download" id="download-btn"><i class="fas fa-download"></i> Download Audio</button>
+            <button class="action-btn btn-generate" id="generate-btn">
+                <div class="spinner" id="spinner"></div>
+                <span id="btn-text"><i class="fas fa-magic"></i> Generate Audio</span>
+            </button>
+            <button class="action-btn btn-play" id="play-btn"><i class="fas fa-play"></i> Play Audio</button>
+            <a id="download-link" style="display: none; flex: 1;">
+                <button class="action-btn btn-download" id="download-btn" style="width: 100%;"><i class="fas fa-download"></i> Download MP3</button>
+            </a>
         </div>
+
+        <!-- Hidden Audio Element -->
+        <audio id="audio-player"></audio>
     </div>
 
     <script>
-        let synth = window.speechSynthesis;
-        let voices = [];
-        window.selectedVoiceIndex = 0;
-
-        const selectHeader = document.getElementById('select-header');
-        const selectList = document.getElementById('select-list');
-        const selectedVoiceText = document.getElementById('selected-voice-text');
+        // ==========================================
+        //  آپ کی VoiceRSS کی API Key یہاں سیٹ کر دی گئی ہے
+        // ==========================================
+        const API_KEY = "f92f0d3524064f6b83e88274979fb105"; 
+        
         const textInput = document.getElementById('text-input');
         const wordCountDisplay = document.getElementById('word-count');
+        const generateBtn = document.getElementById('generate-btn');
         const playBtn = document.getElementById('play-btn');
+        const downloadLink = document.getElementById('download-link');
+        const downloadBtn = document.getElementById('download-btn');
+        const voiceSelect = document.getElementById('voice-select');
+        const audioPlayer = document.getElementById('audio-player');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btn-text');
+        
+        let audioBlobUrl = null;
 
-        selectHeader.addEventListener('click', () => { selectList.classList.toggle('show'); });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.custom-select-container')) {
-                selectList.classList.remove('show');
-            }
-        });
-
-        function populateVoices() {
-            voices = synth.getVoices();
-            selectList.innerHTML = '';
-            
-            if(voices.length === 0) {
-                selectedVoiceText.textContent = 'No voices found on this device';
-                return;
-            }
-
-            voices.sort((a, b) => a.lang.localeCompare(b.lang));
-            const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
-
-            voices.forEach((voice, i) => {
-                let friendlyLangName = voice.lang;
-                try { friendlyLangName = languageNames.of(voice.lang); } catch (e) {}
-
-                let shortName = voice.name
-                    .replace(/Microsoft|Google|Apple|Desktop|Network|Online|Natural|English/gi, '')
-                    .replace(/\(.*?\)/g, '')
-                    .replace(/[^a-zA-Z0-9 ]/g, '')
-                    .trim();
-                
-                if(!shortName) shortName = "Standard Voice";
-
-                const item = document.createElement('div');
-                item.className = 'select-item';
-                
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'voice-info';
-                infoDiv.innerHTML = `<div class="voice-name">${shortName}</div><div class="voice-lang">${friendlyLangName}</div>`;
-                
-                const previewBtn = document.createElement('button');
-                previewBtn.className = 'inline-play-btn';
-                previewBtn.innerHTML = '<i class="fas fa-play"></i>';
-                previewBtn.title = "Preview this voice";
-                
-                previewBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    if (synth.speaking) synth.cancel();
-                    
-                    const previewUtterance = new SpeechSynthesisUtterance("Testing voice");
-                    previewUtterance.voice = voice;
-                    synth.speak(previewUtterance);
-                };
-
-                item.onclick = () => {
-                    window.selectedVoiceIndex = i;
-                    selectedVoiceText.textContent = `${shortName} — ${friendlyLangName}`;
-                    selectList.classList.remove('show');
-                };
-
-                item.appendChild(infoDiv);
-                item.appendChild(previewBtn);
-                selectList.appendChild(item);
-            });
-
-            if(voices.length > 0 && selectedVoiceText.textContent === 'Loading voices...') {
-                window.selectedVoiceIndex = 0;
-                selectedVoiceText.textContent = "Select a voice from the list...";
-            }
-        }
-
-        populateVoices();
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = populateVoices;
-        }
-
+        // Word Counter (4000 limit)
         textInput.addEventListener('input', () => {
             let text = textInput.value.trim();
             let words = text === "" ? 0 : text.split(/\s+/).length;
-            wordCountDisplay.textContent = `${words} / 5000 Words`;
+            wordCountDisplay.textContent = `${words} / 4000 Words`;
 
-            if (words > 5000) {
+            if (words > 4000) {
                 wordCountDisplay.classList.add('limit-reached');
                 textInput.style.borderColor = 'var(--danger)';
+                generateBtn.disabled = true;
             } else {
                 wordCountDisplay.classList.remove('limit-reached');
                 textInput.style.borderColor = 'var(--border-color)';
+                generateBtn.disabled = false;
             }
         });
 
-        document.getElementById('speed-slider').addEventListener('input', function() {
-            document.getElementById('speed-value').textContent = this.value;
-        });
-        document.getElementById('pitch-slider').addEventListener('input', function() {
-            document.getElementById('pitch-value').textContent = this.value;
-        });
-
-        // Reset Play Button Function
-        function resetPlayButton() {
-            playBtn.classList.remove('speaking');
-            playBtn.innerHTML = '<i class="fas fa-play"></i> Play Voiceover';
-        }
-
-        playBtn.addEventListener('click', () => {
-            if (synth.speaking) synth.cancel();
-
+        // Generate Audio Logic
+        generateBtn.addEventListener('click', async () => {
             let text = textInput.value.trim();
             let words = text === "" ? 0 : text.split(/\s+/).length;
 
             if (text === '') { alert('Please enter some text first!'); return; }
-            if (words > 5000) { alert('Limit exceeded! Please keep your text under 5000 words.'); return; }
+            if (words > 4000) { alert('Limit exceeded! Keep your text under 4000 words.'); return; }
 
-            const utterThis = new SpeechSynthesisUtterance(text);
-            const selectedVoice = voices[window.selectedVoiceIndex];
-            if(selectedVoice) utterThis.voice = selectedVoice;
-            
-            utterThis.rate = document.getElementById('speed-slider').value;
-            utterThis.pitch = document.getElementById('pitch-slider').value;
+            // Get selected language and voice name
+            const [lang, voiceName] = voiceSelect.value.split('|');
 
-            // UI changes when speaking starts
-            utterThis.onstart = () => {
-                playBtn.classList.add('speaking');
-                playBtn.innerHTML = '<i class="fas fa-volume-up"></i> Speaking...';
-            };
+            // UI Changes - Loading State
+            generateBtn.disabled = true;
+            spinner.style.display = 'block';
+            btnText.textContent = ' Processing MP3...';
+            playBtn.style.display = 'none';
+            downloadLink.style.display = 'none';
 
-            // Reset UI when speaking finishes or errors
-            utterThis.onend = resetPlayButton;
-            utterThis.onerror = resetPlayButton;
+            // API Request (POST method for long text)
+            try {
+                const response = await fetch('https://api.voicerss.org/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `key=${API_KEY}&hl=${lang}&v=${voiceName}&c=MP3&f=44khz_16bit_stereo&src=${encodeURIComponent(text)}`
+                });
 
-            synth.speak(utterThis);
+                if (!response.ok) throw new Error('API Request Failed');
+
+                const blob = await response.blob();
+                
+                // If the API returns an error message as a blob, it might be small text
+                if (blob.type === "text/html" || blob.size < 1000) {
+                    const textError = await blob.text();
+                    alert("API Error: " + textError);
+                    resetUI();
+                    return;
+                }
+
+                // Success - Create Audio URL
+                if (audioBlobUrl) URL.revokeObjectURL(audioBlobUrl);
+                audioBlobUrl = URL.createObjectURL(blob);
+                
+                // Prepare Audio Player and Download Button
+                audioPlayer.src = audioBlobUrl;
+                downloadLink.href = audioBlobUrl;
+                downloadLink.download = "LoonaLabs_Voiceover.mp3";
+                
+                // Update UI - Show Play & Download
+                spinner.style.display = 'none';
+                btnText.innerHTML = '<i class="fas fa-check"></i> Audio Ready!';
+                playBtn.style.display = 'flex';
+                downloadLink.style.display = 'flex';
+                downloadBtn.style.display = 'flex';
+                generateBtn.disabled = false;
+
+            } catch (error) {
+                alert('Error generating audio. Please check your internet connection.');
+                resetUI();
+            }
         });
 
-        document.getElementById('pause-btn').addEventListener('click', () => {
-            if (synth.speaking && !synth.paused) synth.pause();
+        // Play / Pause Logic
+        playBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Audio';
+                playBtn.style.backgroundColor = '#d97706'; // Orange while playing
+            } else {
+                audioPlayer.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Play Audio';
+                playBtn.style.backgroundColor = 'var(--success)';
+            }
         });
 
-        document.getElementById('resume-btn').addEventListener('click', () => {
-            if (synth.paused) synth.resume();
+        // Reset play button when audio ends
+        audioPlayer.addEventListener('ended', () => {
+            playBtn.innerHTML = '<i class="fas fa-play"></i> Play Audio';
+            playBtn.style.backgroundColor = 'var(--success)';
         });
 
-        document.getElementById('stop-btn').addEventListener('click', () => {
-            synth.cancel();
-            resetPlayButton();
-        });
-
-        document.getElementById('download-btn').addEventListener('click', () => {
-            alert("To save audio locally, please use your device's built-in screen recorder or voice memo app while the audio is playing. This keeps the tool 100% free!");
-        });
+        function resetUI() {
+            spinner.style.display = 'none';
+            btnText.innerHTML = '<i class="fas fa-magic"></i> Generate Audio';
+            generateBtn.disabled = false;
+        }
     </script>
 </body>
 </html>
