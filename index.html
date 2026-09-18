@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoonaLabs - Professional Voice Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --danger: #ef4444;
+            --dropdown-hover: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        .main-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- PRO TIP ALERT BOX --- */
+        .browser-recommendation {
+            background-color: #e0e7ff;
+            color: #3730a3;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #c7d2fe;
+            line-height: 1.5;
+        }
+
+        .browser-recommendation i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-section label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .word-counter {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .word-counter.limit-reached { color: var(--danger); }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* --- ADVANCED CUSTOM DROPDOWN --- */
+        .custom-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-header {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .select-header:hover { border-color: var(--primary); }
+
+        .select-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 5px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .select-list.show { display: block; }
+
+        .select-item {
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .select-item:hover { background: var(--dropdown-hover); }
+        .select-item:last-child { border-bottom: none; }
+
+        .voice-info {
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+        }
+
+        .voice-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+        .voice-lang { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+        .inline-play-btn {
+            background: #e2e8f0;
+            color: var(--primary);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .inline-play-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-play { background: var(--primary); color: white; }
+        .btn-play:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-pause { background: #e2e8f0; color: var(--text-main); }
+        .btn-pause:hover { background: #cbd5e1; }
+        .btn-download { background: #10b981; color: white; }
+        .btn-download:hover { background: #059669; }
+
+        @media (max-width: 600px) {
+            .action-buttons { flex-direction: column; }
+            .browser-recommendation { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-container">
+            <img src="logo.jpg" alt="LoonaLabs Logo" class="logo-img" onerror="this.style.display='none'">
+            <h1>LoonaLabs</h1>
+        </div>
+        <p>Professional Unlimited Text-to-Speech Studio</p>
+    </div>
+
+    <div class="main-container">
+        
+        <!-- PRO TIP BOX ADDED HERE -->
+        <div class="browser-recommendation">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+                <strong>Pro Tip:</strong> For the most natural, human-like, and emotional voices, we highly recommend using this tool in <b>Microsoft Edge</b> or <b>Google Chrome</b> browser.
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <label for="text-input">Enter your text here:</label>
+            <textarea id="text-input" placeholder="Type or paste your text here to generate professional voiceover..."></textarea>
+            <div class="word-counter" id="word-count">0 / 5000 Words</div>
+        </div>
+
+        <div class="controls-grid">
+            <div class="control-group" style="grid-column: 1 / -1;">
+                <label><i class="fas fa-globe"></i> Select Voice</label>
+                
+                <div class="custom-select-container">
+                    <div class="select-header" id="select-header">
+                        <span id="selected-voice-text">Loading voices...</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="select-list" id="select-list">
+                        <!-- Voices will be loaded here via JS -->
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="control-group">
+                <label for="speed-slider"><i class="fas fa-tachometer-alt"></i> Speed (<span id="speed-value">1.0</span>x)</label>
+                <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <label for="pitch-slider"><i class="fas fa-music"></i> Pitch (<span id="pitch-value">1.0</span>)</label>
+                <input type="range" id="pitch-slider" min="0" max="2" value="1" step="0.1">
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn btn-play" id="play-btn"><i class="fas fa-play"></i> Generate & Play</button>
+            <button class="action-btn btn-pause" id="pause-btn"><i class="fas fa-pause"></i> Pause</button>
+            <button class="action-btn btn-pause" id="resume-btn"><i class="fas fa-play-circle"></i> Resume</button>
+            <button class="action-btn btn-pause" id="stop-btn"><i class="fas fa-stop"></i> Stop</button>
+            <button class="action-btn btn-download" id="download-btn"><i class="fas fa-download"></i> Download Audio</button>
+        </div>
+    </div>
+
+    <script>
+        let synth = window.speechSynthesis;
+        let voices = [];
+        window.selectedVoiceIndex = 0;
+
+        const selectHeader = document.getElementById('select-header');
+        const selectList = document.getElementById('select-list');
+        const selectedVoiceText = document.getElementById('selected-voice-text');
+        const textInput = document.getElementById('text-input');
+        const wordCountDisplay = document.getElementById('word-count');
+
+        // Toggle Custom Dropdown
+        selectHeader.addEventListener('click', () => {
+            selectList.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-select-container')) {
+                selectList.classList.remove('show');
+            }
+        });
+
+        // Load and Format Voices
+        function populateVoices() {
+            voices = synth.getVoices();
+            selectList.innerHTML = '';
+            
+            if(voices.length === 0) {
+                selectedVoiceText.textContent = 'No voices found on this device';
+                return;
+            }
+
+            voices.sort((a, b) => a.lang.localeCompare(b.lang));
+            const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+
+            voices.forEach((voice, i) => {
+                let friendlyLangName = voice.lang;
+                try { friendlyLangName = languageNames.of(voice.lang); } catch (e) {}
+
+                // Clean Name
+                let shortName = voice.name
+                    .replace(/Microsoft|Google|Apple|Desktop|Network|Online|Natural|English/gi, '')
+                    .replace(/\(.*?\)/g, '')
+                    .replace(/[^a-zA-Z0-9 ]/g, '')
+                    .trim();
+                
+                if(!shortName) shortName = "Standard Voice";
+
+                // Create Item
+                const item = document.createElement('div');
+                item.className = 'select-item';
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'voice-info';
+                infoDiv.innerHTML = `<div class="voice-name">${shortName}</div><div class="voice-lang">${friendlyLangName}</div>`;
+                
+                const playBtn = document.createElement('button');
+                playBtn.className = 'inline-play-btn';
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                playBtn.title = "Preview this voice";
+                
+                playBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (synth.speaking) synth.cancel();
+                    
+                    const previewUtterance = new SpeechSynthesisUtterance("Testing voice");
+                    previewUtterance.voice = voice;
+                    synth.speak(previewUtterance);
+                };
+
+                item.onclick = () => {
+                    window.selectedVoiceIndex = i;
+                    selectedVoiceText.textContent = `${shortName} — ${friendlyLangName}`;
+                    selectList.classList.remove('show');
+                };
+
+                item.appendChild(infoDiv);
+                item.appendChild(playBtn);
+                selectList.appendChild(item);
+            });
+
+            if(voices.length > 0 && selectedVoiceText.textContent === 'Loading voices...') {
+                window.selectedVoiceIndex = 0;
+                selectedVoiceText.textContent = "Select a voice from the list...";
+            }
+        }
+
+        populateVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        // Word Counter
+        textInput.addEventListener('input', () => {
+            let text = textInput.value.trim();
+            let words = text === "" ? 0 : text.split(/\s+/).length;
+            wordCountDisplay.textContent = `${words} / 5000 Words`;
+
+            if (words > 5000) {
+                wordCountDisplay.classList.add('limit-reached');
+                textInput.style.borderColor = 'var(--danger)';
+            } else {
+                wordCountDisplay.classList.remove('limit-reached');
+                textInput.style.borderColor = 'var(--border-color)';
+            }
+        });
+
+        // Sliders
+        document.getElementById('speed-slider').addEventListener('input', function() {
+            document.getElementById('speed-value').textContent = this.value;
+        });
+        document.getElementById('pitch-slider').addEventListener('input', function() {
+            document.getElementById('pitch-value').textContent = this.value;
+        });
+
+        // Main Play Button
+        document.getElementById('play-btn').addEventListener('click', () => {
+            if (synth.speaking) synth.cancel();
+
+            let text = textInput.value.trim();
+            let words = text === "" ? 0 : text.split(/\s+/).length;
+
+            if (text === '') { alert('Please enter some text first!'); return; }
+            if (words > 5000) { alert('Limit exceeded! Please keep your text under 5000 words.'); return; }
+
+            const utterThis = new SpeechSynthesisUtterance(text);
+            const selectedVoice = voices[window.selectedVoiceIndex];
+            if(selectedVoice) utterThis.voice = selectedVoice;
+            
+            utterThis.rate = document.getElementById('speed-slider').value;
+            utterThis.pitch = document.getElementById('pitch-slider').value;
+
+            synth.speak(utterThis);
+        });
+
+        document.getElementById('pause-btn').addEventListener('click', () => {
+            if (synth.speaking && !synth.paused) synth.pause();
+        });
+
+        document.getElementById('resume-btn').addEventListener('click', () => {
+            if (synth.paused) synth.resume();
+        });
+
+        document.getElementById('stop-btn').addEventListener('click', () => {
+            synth.cancel();
+        });
+
+        document.getElementById('download-btn').addEventListener('click', () => {
+            alert("To save audio locally, please use your device's built-in screen recorder or voice memo app while the audio is playing. This keeps the tool 100% free!");
+        });
+    </script>
+</body>
+</html>
