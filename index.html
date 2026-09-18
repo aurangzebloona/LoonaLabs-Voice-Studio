@@ -190,7 +190,6 @@
             <div class="control-group">
                 <label><i class="fas fa-user-circle"></i> Select Professional Voice</label>
                 <select id="voice-select">
-                    <!-- Only 100% supported Voices Added -->
                     <option value="en-us|John">John — English (USA) — Male</option>
                     <option value="en-us|Linda">Linda — English (USA) — Female</option>
                     <option value="en-gb|Harry">Harry — English (UK) — Male</option>
@@ -221,9 +220,7 @@
     </div>
 
     <script>
-        // ==========================================
-        //  آپ کی VoiceRSS کی API Key یہاں سیٹ کر دی گئی ہے
-        // ==========================================
+        // آپ کی دی گئی پکی API Key
         const API_KEY = "f92f0d3524064f6b83e88274979fb105"; 
         
         const textInput = document.getElementById('text-input');
@@ -239,25 +236,35 @@
         
         let audioBlobUrl = null;
 
-        // Word Counter & UI Reset Logic
+        // ===== سخت ری سیٹ سسٹم (Strict UI Reset) =====
+        function strictUIReset() {
+            // 1. بٹنوں کو غائب کریں
+            playBtn.style.display = 'none';
+            downloadLink.style.display = 'none';
+            
+            // 2. جنریٹ بٹن کا ٹیکسٹ واپس اصلی حالت میں لائیں
+            btnText.innerHTML = '<i class="fas fa-magic"></i> Generate Audio';
+            
+            // 3. اگر پرانی آڈیو پلے ہو رہی ہے تو اسے روکیں اور پکی ڈیلیٹ کریں
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            audioPlayer.src = ""; 
+            
+            // 4. پرانی ڈاؤن لوڈ فائل کا لنک بھی اڑا دیں تاکہ وہ غلطی سے بھی ڈاؤن لوڈ نہ ہو
+            downloadLink.href = "";
+            downloadLink.removeAttribute("download");
+        }
+
+        // جب یوزر ٹیکسٹ باکس میں کچھ بھی لکھے، مٹائے یا پیسٹ کرے
         textInput.addEventListener('input', () => {
             let text = textInput.value.trim();
             let words = text === "" ? 0 : text.split(/\s+/).length;
             wordCountDisplay.textContent = `${words} / 4000 Words`;
 
-            // ----- NEW: Auto Hide Play/Download buttons when user types new text -----
-            playBtn.style.display = 'none';
-            downloadLink.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            btnText.innerHTML = '<i class="fas fa-magic"></i> Generate Audio';
-            
-            // Stop playing audio if user starts typing
-            if (!audioPlayer.paused) {
-                audioPlayer.pause();
-                audioPlayer.currentTime = 0;
-            }
-            // --------------------------------------------------------------------------
+            // پرانی آڈیو اور بٹن فوراً غائب کر دے گا
+            strictUIReset();
 
+            // الفاظ کی لمٹ چیک
             if (words > 4000) {
                 wordCountDisplay.classList.add('limit-reached');
                 textInput.style.borderColor = 'var(--danger)';
@@ -267,6 +274,11 @@
                 textInput.style.borderColor = 'var(--border-color)';
                 generateBtn.disabled = false;
             }
+        });
+
+        // نیا فیچر: اگر یوزر نئی آواز (Voice) سلیکٹ کرے تو بھی پرانی آڈیو غائب ہو جائے
+        voiceSelect.addEventListener('change', () => {
+            strictUIReset();
         });
 
         // Generate Audio Logic
