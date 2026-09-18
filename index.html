@@ -79,7 +79,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* --- PRO TIP ALERT BOX --- */
         .browser-recommendation {
             background-color: #e0e7ff;
             color: #3730a3;
@@ -161,7 +160,6 @@
             color: var(--text-main);
         }
 
-        /* --- ADVANCED CUSTOM DROPDOWN --- */
         .custom-select-container {
             position: relative;
             width: 100%;
@@ -270,6 +268,14 @@
 
         .btn-play { background: var(--primary); color: white; }
         .btn-play:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        
+        .btn-play.speaking {
+            background: #4338ca;
+            opacity: 0.8;
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+            cursor: not-allowed;
+        }
+
         .btn-pause { background: #e2e8f0; color: var(--text-main); }
         .btn-pause:hover { background: #cbd5e1; }
         .btn-download { background: #10b981; color: white; }
@@ -293,7 +299,6 @@
 
     <div class="main-container">
         
-        <!-- PRO TIP BOX ADDED HERE -->
         <div class="browser-recommendation">
             <i class="fas fa-lightbulb"></i>
             <div>
@@ -317,10 +322,8 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="select-list" id="select-list">
-                        <!-- Voices will be loaded here via JS -->
                     </div>
                 </div>
-
             </div>
             
             <div class="control-group">
@@ -335,7 +338,7 @@
         </div>
 
         <div class="action-buttons">
-            <button class="action-btn btn-play" id="play-btn"><i class="fas fa-play"></i> Generate & Play</button>
+            <button class="action-btn btn-play" id="play-btn"><i class="fas fa-play"></i> Play Voiceover</button>
             <button class="action-btn btn-pause" id="pause-btn"><i class="fas fa-pause"></i> Pause</button>
             <button class="action-btn btn-pause" id="resume-btn"><i class="fas fa-play-circle"></i> Resume</button>
             <button class="action-btn btn-pause" id="stop-btn"><i class="fas fa-stop"></i> Stop</button>
@@ -353,20 +356,16 @@
         const selectedVoiceText = document.getElementById('selected-voice-text');
         const textInput = document.getElementById('text-input');
         const wordCountDisplay = document.getElementById('word-count');
+        const playBtn = document.getElementById('play-btn');
 
-        // Toggle Custom Dropdown
-        selectHeader.addEventListener('click', () => {
-            selectList.classList.toggle('show');
-        });
+        selectHeader.addEventListener('click', () => { selectList.classList.toggle('show'); });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.custom-select-container')) {
                 selectList.classList.remove('show');
             }
         });
 
-        // Load and Format Voices
         function populateVoices() {
             voices = synth.getVoices();
             selectList.innerHTML = '';
@@ -383,7 +382,6 @@
                 let friendlyLangName = voice.lang;
                 try { friendlyLangName = languageNames.of(voice.lang); } catch (e) {}
 
-                // Clean Name
                 let shortName = voice.name
                     .replace(/Microsoft|Google|Apple|Desktop|Network|Online|Natural|English/gi, '')
                     .replace(/\(.*?\)/g, '')
@@ -392,7 +390,6 @@
                 
                 if(!shortName) shortName = "Standard Voice";
 
-                // Create Item
                 const item = document.createElement('div');
                 item.className = 'select-item';
                 
@@ -400,12 +397,12 @@
                 infoDiv.className = 'voice-info';
                 infoDiv.innerHTML = `<div class="voice-name">${shortName}</div><div class="voice-lang">${friendlyLangName}</div>`;
                 
-                const playBtn = document.createElement('button');
-                playBtn.className = 'inline-play-btn';
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                playBtn.title = "Preview this voice";
+                const previewBtn = document.createElement('button');
+                previewBtn.className = 'inline-play-btn';
+                previewBtn.innerHTML = '<i class="fas fa-play"></i>';
+                previewBtn.title = "Preview this voice";
                 
-                playBtn.onclick = (e) => {
+                previewBtn.onclick = (e) => {
                     e.stopPropagation();
                     if (synth.speaking) synth.cancel();
                     
@@ -421,7 +418,7 @@
                 };
 
                 item.appendChild(infoDiv);
-                item.appendChild(playBtn);
+                item.appendChild(previewBtn);
                 selectList.appendChild(item);
             });
 
@@ -436,7 +433,6 @@
             speechSynthesis.onvoiceschanged = populateVoices;
         }
 
-        // Word Counter
         textInput.addEventListener('input', () => {
             let text = textInput.value.trim();
             let words = text === "" ? 0 : text.split(/\s+/).length;
@@ -451,7 +447,6 @@
             }
         });
 
-        // Sliders
         document.getElementById('speed-slider').addEventListener('input', function() {
             document.getElementById('speed-value').textContent = this.value;
         });
@@ -459,8 +454,13 @@
             document.getElementById('pitch-value').textContent = this.value;
         });
 
-        // Main Play Button
-        document.getElementById('play-btn').addEventListener('click', () => {
+        // Reset Play Button Function
+        function resetPlayButton() {
+            playBtn.classList.remove('speaking');
+            playBtn.innerHTML = '<i class="fas fa-play"></i> Play Voiceover';
+        }
+
+        playBtn.addEventListener('click', () => {
             if (synth.speaking) synth.cancel();
 
             let text = textInput.value.trim();
@@ -476,6 +476,16 @@
             utterThis.rate = document.getElementById('speed-slider').value;
             utterThis.pitch = document.getElementById('pitch-slider').value;
 
+            // UI changes when speaking starts
+            utterThis.onstart = () => {
+                playBtn.classList.add('speaking');
+                playBtn.innerHTML = '<i class="fas fa-volume-up"></i> Speaking...';
+            };
+
+            // Reset UI when speaking finishes or errors
+            utterThis.onend = resetPlayButton;
+            utterThis.onerror = resetPlayButton;
+
             synth.speak(utterThis);
         });
 
@@ -489,6 +499,7 @@
 
         document.getElementById('stop-btn').addEventListener('click', () => {
             synth.cancel();
+            resetPlayButton();
         });
 
         document.getElementById('download-btn').addEventListener('click', () => {
